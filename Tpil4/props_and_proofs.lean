@@ -9,7 +9,20 @@ example : p ∧ q ↔ q ∧ p :=
       show p ∧ q from And.intro (And.right h) (And.left h))
 
 
-example : p ∨ q ↔ q ∨ p := sorry
+example : p ∨ q ↔ q ∨ p :=
+  Iff.intro
+    (fun h : p ∨ q =>
+      Or.elim h
+      (fun hp : p =>
+        show q ∨ p from Or.intro_right q hp)
+      (fun hq : q =>
+        show q ∨ p from Or.intro_left p hq))
+    (fun h : q ∨ p =>
+      Or.elim h
+      (fun hq : q =>
+        show p ∨ q from Or.intro_right p hq)
+      (fun hp : p =>
+        show p ∨ q from Or.intro_left q hp))
 
 -- associativity of ∧ and ∨
 example : (p ∧ q) ∧ r ↔ p ∧ (q ∧ r) := sorry
