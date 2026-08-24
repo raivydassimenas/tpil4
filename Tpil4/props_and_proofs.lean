@@ -138,7 +138,22 @@ example : ((p ∨ q) → r) ↔ (p → r) ∧ (q → r) :=
           (fun hq : q =>
             hprqr.right hq))
 
-example : ¬(p ∨ q) ↔ ¬p ∧ ¬q := sorry
+example : ¬(p ∨ q) ↔ ¬p ∧ ¬q := 
+  Iff.intro
+    (fun hnpq : ¬(p ∨ q) =>
+      And.intro
+        (fun hp : p =>
+          absurd (Or.inl hp) hnpq)
+        (fun hq : q =>
+          absurd (Or.inr hq) hnpq))
+    (fun hnpnq : ¬p ∧ ¬q =>
+      fun hpq : p ∨ q =>
+        Or.elim hpq
+        (fun hp : p =>
+          absurd hp hnpnq.left)
+        (fun hq : q =>
+          absurd hq hnpnq.right))
+
 example : ¬p ∨ ¬q → ¬(p ∧ q) := sorry
 example : ¬(p ∧ ¬p) := sorry
 example : p ∧ ¬q → ¬(p → q) := sorry
