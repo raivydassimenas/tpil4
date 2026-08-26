@@ -154,8 +154,20 @@ example : ¬(p ∨ q) ↔ ¬p ∧ ¬q :=
         (fun hq : q =>
           absurd hq hnpnq.right))
 
-example : ¬p ∨ ¬q → ¬(p ∧ q) := sorry
-example : ¬(p ∧ ¬p) := sorry
+example : ¬p ∨ ¬q → ¬(p ∧ q) := 
+  fun hnpnq : ¬p ∨ ¬q =>
+    Or.elim hnpnq
+    (fun hnp : ¬p =>
+      fun hpq : p ∧ q =>
+        absurd hpq.left hnp)
+    (fun hnq : ¬q =>
+      fun hpq : p ∧ q =>
+        absurd hpq.right hnq)
+
+example : ¬(p ∧ ¬p) := 
+  fun hpnp : p ∧ ¬p =>
+    absurd hpnp.left hpnp.right
+
 example : p ∧ ¬q → ¬(p → q) := sorry
 example : ¬p → (p → q) := sorry
 example : (¬p ∨ q) → (p → q) := sorry
