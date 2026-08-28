@@ -168,8 +168,18 @@ example : ¬(p ∧ ¬p) :=
   fun hpnp : p ∧ ¬p =>
     absurd hpnp.left hpnp.right
 
-example : p ∧ ¬q → ¬(p → q) := sorry
-example : ¬p → (p → q) := sorry
+example : p ∧ ¬q → ¬(p → q) := 
+  fun hpnq : p ∧ ¬q =>
+    have hp : p := hpnq.left
+    have hnq : ¬q := hpnq.right
+    fun hpq : p → q =>
+      absurd (hpq hp) hnq
+
+example : ¬p → (p → q) :=
+  fun hnp : ¬p =>
+    fun hp : p =>
+      absurd hp hnp
+
 example : (¬p ∨ q) → (p → q) := sorry
 example : p ∨ False ↔ p := sorry
 example : p ∧ False ↔ False := sorry
