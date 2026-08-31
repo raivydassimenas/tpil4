@@ -180,7 +180,25 @@ example : ¬p → (p → q) :=
     fun hp : p =>
       absurd hp hnp
 
-example : (¬p ∨ q) → (p → q) := sorry
-example : p ∨ False ↔ p := sorry
+example : (¬p ∨ q) → (p → q) :=
+  fun hnpq : ¬p ∨ q =>
+    Or.elim hnpq
+    (fun hnp : ¬p =>
+      fun hp : p =>
+        absurd hp hnp)
+    (fun hq : q =>
+      fun _ =>
+        hq)
+
+example : p ∨ False ↔ p :=
+  Iff.intro
+    (fun hpf : p ∨ False =>
+      Or.elim hpf
+      (fun hp : p =>
+        hp)
+      (fun h: False =>
+          h.elim))
+    (fun hp : p =>
+      Or.inl hp)
 example : p ∧ False ↔ False := sorry
 example : (p → q) → (¬q → ¬p) := sorry
