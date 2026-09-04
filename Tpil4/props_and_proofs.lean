@@ -213,3 +213,24 @@ example : (p → q) → (¬q → ¬p) :=
     fun hnq : ¬q =>
       fun hp : p =>
         absurd (hpq hp) hnq
+
+open Classical
+
+variable (p q r : Prop)
+
+example : (p → q ∨ r) → ((p → q) ∨ (p → r)) := 
+  fun hpqor : p → q ∨ r =>
+    byCases
+      (fun hp : p =>
+        have hqr : q ∨ r := hpqor hp
+        Or.elim hqr
+          (fun hq : q => Or.inl (fun _ => hq))
+          (fun hr : r => Or.inr (fun _ => hr)))
+      (fun hnp : ¬p => Or.inl (fun hp : p => absurd hp hnp))
+    
+example : ¬(p ∧ q) → ¬p ∨ ¬q := sorry
+example : ¬(p → q) → p ∧ ¬q := sorry
+example : (p → q) → (¬p ∨ q) := sorry
+example : (¬q → ¬p) → (p → q) := sorry
+example : p ∨ ¬p := sorry
+example : (((p → q) → p) → p) := sorry
