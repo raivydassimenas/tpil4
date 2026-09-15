@@ -248,7 +248,22 @@ example : ¬(p → q) → p ∧ ¬q :=
         have hpq : p → q := fun hp : p => absurd hp hnp
         absurd hpq hnpq)
 
-example : (p → q) → (¬p ∨ q) := sorry
-example : (¬q → ¬p) → (p → q) := sorry
+example : (p → q) → (¬p ∨ q) := 
+  fun hpq : p → q =>
+    Or.elim (em p)
+      (fun hp : p =>
+        have hq : q := hpq hp
+        Or.inr hq)
+      (fun hnp : ¬p => Or.inl hnp)
+
+example : (¬q → ¬p) → (p → q) := 
+  fun hnqnp : ¬q → ¬p =>
+    Or.elim (em q)
+      (fun hq : q =>
+        fun _ => hq)
+      (fun hnq : ¬q =>
+        have hnp : ¬p := hnqnp hnq
+        fun hp : p => absurd hp hnp)
+
 example : p ∨ ¬p := sorry
 example : (((p → q) → p) → p) := sorry
