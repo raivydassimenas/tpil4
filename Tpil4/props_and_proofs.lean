@@ -265,5 +265,11 @@ example : (¬q → ¬p) → (p → q) :=
         have hnp : ¬p := hnqnp hnq
         fun hp : p => absurd hp hnp)
 
-example : p ∨ ¬p := sorry
-example : (((p → q) → p) → p) := sorry
+example : p ∨ ¬p := 
+  em p
+
+example : (((p → q) → p) → p) := 
+  fun hpqp : (p → q) → p =>
+    Or.elim (em p)
+      (fun hp : p => hp)
+      (fun hnp : ¬p => hpqp (fun hp : p => absurd hp hnp))
